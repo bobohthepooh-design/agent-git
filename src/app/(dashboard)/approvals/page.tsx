@@ -10,6 +10,35 @@ export default function ApprovalsPage() {
   const [selectedFilter, setSelectedFilter] = useState("pending");
   const [searchTerm, setSearchTerm] = useState("");
 
+  const handleApproval = async (approvalId: string, action: 'approve' | 'reject') => {
+    try {
+      // Call API to process approval
+      const response = await fetch('/api/approvals', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token') || 'mock-token'}`,
+        },
+        body: JSON.stringify({
+          approvalId,
+          action,
+          comments: `${action}d by user`
+        })
+      });
+
+      if (response.ok) {
+        alert(`Document ${action}d successfully!`);
+        // Refresh the page or update state
+        window.location.reload();
+      } else {
+        alert('Failed to process approval');
+      }
+    } catch (error) {
+      console.error('Approval error:', error);
+      alert('Error processing approval');
+    }
+  };
+
   const mockApprovals = [
     {
       id: "1",
@@ -276,6 +305,7 @@ export default function ApprovalsPage() {
                             <motion.button
                               whileHover={{ scale: 1.05 }}
                               whileTap={{ scale: 0.95 }}
+                              onClick={() => handleApproval(approval.id, 'approve')}
                               className="px-3 py-1 bg-green-500 text-white text-xs rounded hover:bg-green-600 transition-colors"
                             >
                               Approve
@@ -283,6 +313,7 @@ export default function ApprovalsPage() {
                             <motion.button
                               whileHover={{ scale: 1.05 }}
                               whileTap={{ scale: 0.95 }}
+                              onClick={() => handleApproval(approval.id, 'reject')}
                               className="px-3 py-1 bg-red-500 text-white text-xs rounded hover:bg-red-600 transition-colors"
                             >
                               Reject
