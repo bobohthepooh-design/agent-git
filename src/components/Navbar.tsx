@@ -71,6 +71,9 @@ export default function Navbar() {
             <a href="/creative-ai" className="text-gray-300 hover:text-white transition-colors">
               Creative AI
             </a>
+            <a href="/document-control" className="text-gray-300 hover:text-white transition-colors">
+              Document Control
+            </a>
             <a href="#features" className="text-gray-300 hover:text-white transition-colors">
               Features
             </a>
@@ -155,6 +158,13 @@ export default function Navbar() {
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Creative AI
+              </a>
+              <a
+                href="/document-control"
+                className="block px-3 py-2 text-gray-300 hover:text-white transition-colors"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Document Control
               </a>
               <a
                 href="#features"

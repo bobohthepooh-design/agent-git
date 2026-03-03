@@ -1,65 +1,158 @@
-import Image from "next/image";
+"use client";
+
+import { motion } from "framer-motion";
+import { Brain, Sparkles, Zap, ArrowRight, FileText } from "lucide-react";
+import { useEffect, useState } from "react";
+import Navbar from "@/components/Navbar";
 
 export default function Home() {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  const particles = isClient ? [...Array(20)] : []; // Reduced from 50 to 20
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <div className="min-h-screen bg-black text-white overflow-hidden">
+      <Navbar />
+      
+      {/* Animated background particles */}
+      <div className="absolute inset-0 overflow-hidden">
+        {particles.map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-1 h-1 bg-white rounded-full opacity-50"
+            animate={{
+              x: [0, Math.random() * 1000 - 500],
+              y: [0, Math.random() * 1000 - 500],
+              opacity: [0, 1, 0],
+            }}
+            transition={{
+              duration: Math.random() * 15 + 15, // Slower animations
+              repeat: Infinity,
+              delay: Math.random() * 5,
+              ease: "linear", // Smoother animation
+            }}
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+            }}
+          />
+        ))}
+      </div>
+      
+      {/* Main content with padding for navbar */}
+      <div className="relative z-10 flex min-h-screen flex-col items-center justify-center px-4 pt-16">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="text-center max-w-6xl mx-auto"
+        >
+          {/* Logo/Icon */}
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="mb-8 flex justify-center"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            <div className="relative">
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 30, repeat: Infinity, ease: "linear" }} // Slower rotation
+                className="absolute inset-0 flex items-center justify-center"
+              >
+                <Brain className="w-16 h-16 text-white opacity-20" />
+              </motion.div>
+              <motion.div
+                animate={{ scale: [1, 1.2, 1] }} 
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }} 
+                className="relative"
+              >
+                <Sparkles className="w-16 h-16 text-white" />
+              </motion.div>
+            </div>
+          </motion.div>
+
+          {/* Main heading */}
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent"
           >
-            Documentation
-          </a>
-        </div>
-      </main>
+            AI Revolution
+          </motion.h1>
+
+          {/* Subheading */}
+          <motion.p
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+            className="text-xl md:text-2xl text-gray-300 mb-8 max-w-2xl mx-auto"
+          >
+            Experience the future of artificial intelligence with cutting-edge technology and innovative solutions
+          </motion.p>
+
+          {/* CTA buttons */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.8 }}
+            className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+          >
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="px-8 py-4 bg-white text-black font-semibold rounded-full flex items-center gap-2 hover:bg-gray-200 transition-colors"
+            >
+              Get Started
+              <ArrowRight className="w-5 h-5" />
+            </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="px-8 py-4 border border-white text-white font-semibold rounded-full hover:bg-white hover:text-black transition-colors"
+            >
+              Learn More
+            </motion.button>
+          </motion.div>
+        </motion.div>
+
+        {/* Feature cards */}
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 1 }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-20 max-w-6xl w-full"
+        >
+          {[
+            { icon: Brain, title: "Smart Learning", description: "Advanced machine learning algorithms", link: "/smart-learning" },
+            { icon: Zap, title: "Lightning Fast", description: "Optimized for maximum performance", link: "/lightning-fast" },
+            { icon: Sparkles, title: "Creative AI", description: "Generate amazing content instantly", link: "/creative-ai" },
+            { icon: FileText, title: "Document Control", description: "Enterprise document management system", link: "/document-control" },
+          ].map((feature, index) => (
+            <motion.div
+              key={index}
+              whileHover={{ scale: 1.05, y: -5 }}
+              onClick={() => window.location.href = feature.link}
+              className="p-6 border border-gray-800 rounded-2xl bg-gray-900/50 backdrop-blur-sm cursor-pointer"
+            >
+              <motion.div
+                animate={{ y: [0, -5, 0] }} // Reduced movement
+                transition={{ duration: 3, repeat: Infinity, delay: index * 0.3, ease: "easeInOut" }}
+                className="mb-4"
+              >
+                <feature.icon className="w-8 h-8 text-white" />
+              </motion.div>
+              <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
+              <p className="text-gray-400">{feature.description}</p>
+            </motion.div>
+          ))}
+        </motion.div>
+      </div>
     </div>
   );
 }
