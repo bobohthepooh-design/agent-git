@@ -6,6 +6,7 @@ export interface JWTPayload {
   email: string;
   role: string;
   department: string;
+  name?: string;
 }
 
 export class AuthService {

@@ -9,7 +9,7 @@ export interface Document {
   fileSize?: number;
   fileType?: string;
   version: number;
-  status: 'draft' | 'pending_approval' | 'approved' | 'rejected' | 'archived';
+  status: 'draft' | 'pending_approval' | 'in_approval' | 'approved' | 'rejected' | 'archived';
   department: string;
   confidentiality: 'public' | 'internal' | 'confidential' | 'secret';
   retentionPolicy?: string;
@@ -47,6 +47,7 @@ export interface Approval {
   comments?: string;
   actionDate?: Date;
   dueDate?: Date;
+  approvedBy?: string;
   createdAt: Date;
 }
 
@@ -74,7 +75,7 @@ export interface AuditLog {
   userId: string;
   userName: string;
   action: string;
-  resourceType: 'document' | 'user' | 'role' | 'workflow';
+  resourceType: 'document' | 'user' | 'role' | 'workflow' | 'approval';
   resourceId: string;
   oldValues?: Record<string, any>;
   newValues?: Record<string, any>;
@@ -82,6 +83,14 @@ export interface AuditLog {
   userAgent: string;
   timestamp: Date;
   blockchainHash?: string;
+}
+
+export interface JWTPayload {
+  userId: string;
+  email: string;
+  role: string;
+  department: string;
+  name?: string;
 }
 
 export interface User {
