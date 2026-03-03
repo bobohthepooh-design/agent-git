@@ -13,26 +13,28 @@ export default function Navbar() {
   const router = useRouter();
 
   useEffect(() => {
-    // Check login status on mount
-    const loggedIn = localStorage.getItem("isLoggedIn") === "true";
-    const userData = localStorage.getItem("user");
-    
-    setIsLoggedIn(loggedIn);
-    if (userData) {
-      setUser(JSON.parse(userData));
+    // Check if user is logged in from localStorage
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+      setIsLoggedIn(true);
     }
   }, []);
 
-  const handleLogout = () => {
-    localStorage.removeItem("isLoggedIn");
-    localStorage.removeItem("user");
-    setIsLoggedIn(false);
-    setUser(null);
+  const handleLogin = () => {
+    // Mock login - in real app, this would redirect to login page
+    const mockUser = { name: "John Doe", email: "john@example.com" };
+    setUser(mockUser);
+    setIsLoggedIn(true);
+    localStorage.setItem("user", JSON.stringify(mockUser));
     router.push("/login");
   };
 
-  const handleLogin = () => {
-    router.push("/login");
+  const handleLogout = () => {
+    setUser(null);
+    setIsLoggedIn(false);
+    localStorage.removeItem("user");
+    router.push("/");
   };
 
   return (
@@ -55,13 +57,23 @@ export default function Navbar() {
               transition={{ duration: 30, repeat: Infinity, ease: "linear" }} // Slower rotation
               className="relative"
             >
-              <FileText className="w-8 h-8 text-white" />
+              <Brain className="w-8 h-8 text-white" />
             </motion.div>
-            <span className="text-xl font-bold text-white">Bank-DMS</span>
+            <span className="text-xl font-bold text-white">AI Revolution</span>
           </motion.div>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
+            <a href="/smart-learning" className="text-gray-300 hover:text-white transition-colors">
+              Smart Learning
+            </a>
+            <a href="/lightning-fast" className="text-gray-300 hover:text-white transition-colors">
+              Lightning Fast
+            </a>
+            <a href="/creative-ai" className="text-gray-300 hover:text-white transition-colors">
+              Creative AI
+            </a>
+            <div className="h-6 w-px bg-gray-600"></div>
             <a href="/documents" className="text-gray-300 hover:text-white transition-colors">
               Documents
             </a>
@@ -74,30 +86,28 @@ export default function Navbar() {
             <a href="/admin" className="text-gray-300 hover:text-white transition-colors">
               Admin
             </a>
-            <a href="/smart-learning" className="text-gray-300 hover:text-white transition-colors">
-              AI Features
-            </a>
+          </div>
 
-            {/* Auth buttons */}
-            {isLoggedIn && user ? (
-              <div className="flex items-center gap-4">
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  className="flex items-center gap-2 px-4 py-2 bg-gray-800 rounded-full"
-                >
-                  <User className="w-4 h-4 text-white" />
-                  <span className="text-white text-sm">{user.name}</span>
-                </motion.div>
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={handleLogout}
-                  className="flex items-center gap-2 px-4 py-2 bg-white text-black rounded-full hover:bg-gray-200 transition-colors"
-                >
-                  <LogOut className="w-4 h-4" />
-                  <span>Logout</span>
-                </motion.button>
-              </div>
+          {/* Auth buttons */}
+          {isLoggedIn && user ? (
+            <div className="flex items-center gap-4">
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                className="flex items-center gap-2 px-4 py-2 bg-gray-800 rounded-full"
+              >
+                <User className="w-4 h-4 text-white" />
+                <span className="text-white text-sm">{user.name}</span>
+              </motion.div>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={handleLogout}
+                className="flex items-center gap-2 px-4 py-2 bg-white text-black rounded-full hover:bg-gray-200 transition-colors"
+              >
+                <LogOut className="w-4 h-4" />
+                <span>Logout</span>
+              </motion.button>
+            </div>
             ) : (
               <motion.button
                 whileHover={{ scale: 1.05 }}
@@ -108,7 +118,6 @@ export default function Navbar() {
                 Sign In
               </motion.button>
             )}
-          </div>
 
           {/* Mobile menu button */}
           <div className="md:hidden">
@@ -116,9 +125,13 @@ export default function Navbar() {
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="text-white"
+              className="p-2"
             >
-              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {isMobileMenuOpen ? (
+                <X className="w-6 h-6 text-white" />
+              ) : (
+                <Menu className="w-6 h-6 text-white" />
+              )}
             </motion.button>
           </div>
         </div>
@@ -132,6 +145,28 @@ export default function Navbar() {
             className="md:hidden bg-black/95 backdrop-blur-sm border-t border-gray-800"
           >
             <div className="px-2 pt-2 pb-3 space-y-1">
+              <a
+                href="/smart-learning"
+                className="block px-3 py-2 text-gray-300 hover:text-white transition-colors"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Smart Learning
+              </a>
+              <a
+                href="/lightning-fast"
+                className="block px-3 py-2 text-gray-300 hover:text-white transition-colors"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Lightning Fast
+              </a>
+              <a
+                href="/creative-ai"
+                className="block px-3 py-2 text-gray-300 hover:text-white transition-colors"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Creative AI
+              </a>
+              <div className="border-t border-gray-700 my-2"></div>
               <a
                 href="/documents"
                 className="block px-3 py-2 text-gray-300 hover:text-white transition-colors"
@@ -160,13 +195,6 @@ export default function Navbar() {
               >
                 Admin
               </a>
-              <a
-                href="/smart-learning"
-                className="block px-3 py-2 text-gray-300 hover:text-white transition-colors"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                AI Features
-              </a>
               
               {isLoggedIn && user ? (
                 <div className="border-t border-gray-800 pt-4 mt-4">
@@ -181,10 +209,9 @@ export default function Navbar() {
                       handleLogout();
                       setIsMobileMenuOpen(false);
                     }}
-                    className="w-full text-left px-3 py-2 text-white hover:bg-gray-800 rounded-lg transition-colors flex items-center gap-2"
+                    className="w-full text-left px-3 py-2 bg-white text-black font-semibold rounded-lg hover:bg-gray-200 transition-colors mt-4"
                   >
-                    <LogOut className="w-4 h-4" />
-                    <span>Logout</span>
+                    Logout
                   </motion.button>
                 </div>
               ) : (

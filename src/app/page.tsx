@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { FileText, Upload, Search, CheckCircle, Shield, BarChart, ArrowRight } from "lucide-react";
+import { Brain, Sparkles, Zap, ArrowRight, FileText, Upload, Search, CheckCircle, Shield, BarChart } from "lucide-react";
 import { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
 
@@ -64,14 +64,14 @@ export default function Home() {
                 transition={{ duration: 30, repeat: Infinity, ease: "linear" }} // Slower rotation
                 className="absolute inset-0 flex items-center justify-center"
               >
-                <FileText className="w-16 h-16 text-white opacity-20" />
+                <Brain className="w-16 h-16 text-white opacity-20" />
               </motion.div>
               <motion.div
                 animate={{ scale: [1, 1.2, 1] }} 
                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }} 
                 className="relative"
               >
-                <Shield className="w-16 h-16 text-white" />
+                <Sparkles className="w-16 h-16 text-white" />
               </motion.div>
             </div>
           </motion.div>
@@ -83,7 +83,7 @@ export default function Home() {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent"
           >
-            Bank Document Management
+            AI Revolution
           </motion.h1>
 
           {/* Subheading */}
@@ -91,9 +91,9 @@ export default function Home() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
-            className="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto"
+            className="text-xl md:text-2xl text-gray-300 mb-8 max-w-2xl mx-auto"
           >
-            Enterprise-grade document control with security, compliance, and audit trails
+            Experience the future of artificial intelligence with cutting-edge technology and innovative solutions
           </motion.p>
 
           {/* CTA buttons */}
@@ -106,7 +106,7 @@ export default function Home() {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="px-8 py-4 bg-blue-500 text-white font-semibold rounded-full flex items-center gap-2 hover:bg-blue-600 transition-colors"
+              className="px-8 py-4 bg-white text-black font-semibold rounded-full flex items-center gap-2 hover:bg-gray-200 transition-colors"
             >
               Get Started
               <ArrowRight className="w-5 h-5" />
@@ -114,7 +114,7 @@ export default function Home() {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="px-8 py-4 border border-blue-500 text-blue-400 font-semibold rounded-full hover:bg-blue-500 hover:text-white transition-colors"
+              className="px-8 py-4 border border-white text-white font-semibold rounded-full hover:bg-white hover:text-black transition-colors"
             >
               Learn More
             </motion.button>
@@ -129,10 +129,10 @@ export default function Home() {
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-20 max-w-6xl w-full"
         >
           {[
-            { icon: Upload, title: "Documents", description: "Upload and manage all your documents", link: "/documents" },
-            { icon: CheckCircle, title: "Approvals", description: "Multi-level approval workflows", link: "/approvals" },
-            { icon: BarChart, title: "Audit", description: "Complete audit trails and compliance", link: "/audit" },
-            { icon: Shield, title: "Security", description: "Enterprise-grade security features", link: "/admin" },
+            { icon: Brain, title: "Smart Learning", description: "Advanced machine learning algorithms", link: "/smart-learning" },
+            { icon: Zap, title: "Lightning Fast", description: "Optimized for maximum performance", link: "/lightning-fast" },
+            { icon: Sparkles, title: "Creative AI", description: "Generate amazing content instantly", link: "/creative-ai" },
+            { icon: FileText, title: "Documents", description: "Enterprise document management system", link: "/documents" },
           ].map((feature, index) => (
             <motion.div
               key={index}
@@ -148,12 +148,47 @@ export default function Home() {
                 transition={{ duration: 3, repeat: Infinity, delay: index * 0.3, ease: "easeInOut" }}
                 className="mb-4"
               >
-                <feature.icon className="w-8 h-8 text-blue-400" />
+                <feature.icon className="w-8 h-8 text-white" />
               </motion.div>
               <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
               <p className="text-gray-400">{feature.description}</p>
             </motion.div>
           ))}
+        </motion.div>
+
+        {/* Document Control Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 1.5 }}
+          className="mt-20 max-w-4xl mx-auto"
+        >
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold mb-4">Document Management System</h2>
+            <p className="text-gray-400">Enterprise-grade document control integrated with AI</p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[
+              { icon: Upload, title: "Upload", desc: "Secure file upload", link: "/documents/upload" },
+              { icon: CheckCircle, title: "Approvals", desc: "Multi-level workflows", link: "/approvals" },
+              { icon: BarChart, title: "Audit", desc: "Complete audit trails", link: "/audit" },
+            ].map((item, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.6 + index * 0.1 }}
+                whileHover={{ scale: 1.05 }}
+                onClick={() => window.location.href = item.link}
+                className="p-6 border border-gray-800 rounded-lg bg-gray-900/50 backdrop-blur-sm cursor-pointer text-center"
+              >
+                <item.icon className="w-8 h-8 text-blue-400 mx-auto mb-3" />
+                <h3 className="font-semibold mb-2">{item.title}</h3>
+                <p className="text-sm text-gray-400">{item.desc}</p>
+              </motion.div>
+            ))}
+          </div>
         </motion.div>
       </div>
     </div>
