@@ -27,25 +27,73 @@ export default function UploadPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsUploading(true);
+    setUploadStatus("idle");
 
     try {
-      // Simulate upload process
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      setUploadStatus("success");
+      console.log('🚀 Starting upload process...');
+      console.log('📁 Files:', files.map(f => ({ name: f.name, size: f.size, type: f.type })));
+      console.log('📋 Metadata:', { title, description, department, confidentiality });
+
+      // Validate required fields
+      if (!title || !department || files.length === 0) {
+        console.error('❌ Validation failed: Missing required fields');
+        setUploadStatus("error");
+        return;
+      }
+
+      // Create FormData for file upload
+      const formData = new FormData();
+      files.forEach((file, index) => {
+        formData.append(`file`, file);
+        console.log(`📎 Adding file ${index + 1}:`, file.name);
+      });
       
-      // Reset form
-      setTimeout(() => {
-        setFiles([]);
-        setTitle("");
-        setDescription("");
-        setDepartment("");
-        setConfidentiality("internal");
-        setUploadStatus("idle");
-      }, 3000);
+      formData.append('title', title);
+      formData.append('description', description || '');
+      formData.append('department', department);
+      formData.append('confidentiality', confidentiality);
+
+      console.log('📤 Sending request to /api/documents/upload...');
+      
+      // Call API
+      const response = await fetch('/api/documents/upload', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token') || 'mock-token'}`,
+        },
+        body: formData
+      });
+
+      console.log('📡 Response status:', response.status);
+      console.log('📡 Response headers:', Object.fromEntries(response.headers.entries()));
+
+      const responseData = await response.json();
+      console.log('📦 Response data:', responseData);
+
+      if (response.ok) {
+        console.log('✅ Upload successful!');
+        setUploadStatus("success");
+        
+        // Reset form after delay
+        setTimeout(() => {
+          setFiles([]);
+          setTitle("");
+          setDescription("");
+          setDepartment("");
+          setConfidentiality("internal");
+          setUploadStatus("idle");
+          console.log('🔄 Form reset completed');
+        }, 3000);
+      } else {
+        console.error('❌ Upload failed:', responseData);
+        setUploadStatus("error");
+      }
     } catch (error) {
+      console.error('💥 Upload error:', error);
       setUploadStatus("error");
     } finally {
       setIsUploading(false);
+      console.log('🏁 Upload process finished');
     }
   };
 
@@ -198,7 +246,10 @@ export default function UploadPage() {
                 className="p-4 bg-green-900/50 border border-green-500 rounded-lg flex items-center gap-3"
               >
                 <CheckCircle className="w-5 h-5 text-green-400" />
-                <span className="text-green-400">Document uploaded successfully!</span>
+                <div>
+                  <span className="text-green-400 font-semibold">Document uploaded successfully!</span>
+                  <p className="text-green-300 text-sm mt-1">Check console for detailed logs</p>
+                </div>
               </motion.div>
             )}
 
@@ -209,9 +260,23 @@ export default function UploadPage() {
                 className="p-4 bg-red-900/50 border border-red-500 rounded-lg flex items-center gap-3"
               >
                 <AlertCircle className="w-5 h-5 text-red-400" />
-                <span className="text-red-400">Upload failed. Please try again.</span>
+                <div>
+                  <span className="text-red-400 font-semibold">Upload failed. Please try again.</span>
+                  <p className="text-red-300 text-sm mt-1">Check console for error details</p>
+                </div>
               </motion.div>
             )}
+
+            {/* Console Logs Display */}
+            <div className="mt-4 p-4 bg-gray-900 border border-gray-800 rounded-lg">
+              <h3 className="text-sm font-semibold text-gray-400 mb-2">📋 Upload Logs (Check Browser Console)</h3>
+              <div className="text-xs text-gray-500 space-y-1">
+                <p>• Open Developer Tools (F12)</p>
+                <p>• Go to Console tab</p>
+                <p>• Look for 🚀, 📁, 📤, 📡, ✅, ❌ emojis</p>
+                <p>• Detailed upload process will be logged</p>
+              </div>
+            </div>
 
             {/* Submit Button */}
             <div className="flex justify-end gap-4">
